@@ -8,13 +8,21 @@ const serviceRouter =  require("./router/service-router")
 const adminRouter = require("./router/admin-router");
 app.use(express.json());
 
+const allowedOriginPattern = /^https:\/\/ed-frontend-.*\.vercel\.app$/;
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://ed-frontend-zeta.vercel.app",
-      "https://ed-frontend-36a6ir7z8-gagan200345.vercel.app"
-    ],
+    origin: function (origin, callback) {
+      if (
+        !origin || // Postman/curl jaise tools ke liye
+        origin === "http://localhost:5173" ||
+        allowedOriginPattern.test(origin)
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
