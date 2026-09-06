@@ -75,7 +75,7 @@ const authorizationToken =  `Bearer ${token}`;
   const getServices = async () => {
     try {
       const response = await fetch(
-        "http://https://ed-backend-r5j2.onrender.com/api/auth/service"
+        "https://ed-backend-r5j2.onrender.com/api/auth/service"
       );
 
       if (!response.ok) {
