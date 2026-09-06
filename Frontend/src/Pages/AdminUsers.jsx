@@ -43,7 +43,7 @@ const AdminUsers = () => {
     const getAllUsers = async () => {
       try {
         const response = await fetch(
-          "http://https://ed-backend-r5j2.onrender.com/api/admin/users",
+          "https://ed-backend-r5j2.onrender.com/api/admin/users",
           {
             method: "GET",
             headers: {
