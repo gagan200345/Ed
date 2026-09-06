@@ -10,7 +10,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://ed-frontend-zeta.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://ed-frontend-zeta.vercel.app",
+      "https://ed-frontend-36a6ir7z8-gagan200345.vercel.app"
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
@@ -25,7 +29,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/auth",router)
 
  connectDB().then(()=>{
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
   console.log(`Server is running at port: ${PORT}`)
 });
