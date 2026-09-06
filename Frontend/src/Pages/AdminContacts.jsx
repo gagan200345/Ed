@@ -1,11 +1,15 @@
+
 import { useEffect, useState } from "react";
 import { useAuth } from "../store/auth";
 import "../index.css";
+
+const API_URL = "https://ed-backend-r5j2.onrender.com";
 
 const AdminContacts = () => {
   const { authorizationToken } = useAuth();
 
   const [contactData, setContactData] = useState([]);
+  const [deletingId, setDeletingId] = useState(null);
 
   // =========================
   // Get All Contacts
@@ -16,7 +20,7 @@ const AdminContacts = () => {
     const fetchContacts = async () => {
       try {
         const response = await fetch(
-          "https://ed-backend-r5j2.onrender.com/api/admin/contacts",
+          `${API_URL}/api/admin/contacts`,
           {
             method: "GET",
             headers: {
@@ -39,7 +43,7 @@ const AdminContacts = () => {
 
         setContactData(data.contacts || []);
       } catch (error) {
-        console.log("GET CONTACT ERROR:", error);
+        console.error("GET CONTACT ERROR:", error);
       }
     };
 
@@ -50,18 +54,39 @@ const AdminContacts = () => {
   // Delete Contact
   // =========================
   const deleteContactById = async (id) => {
+    if (!id) {
+      alert("Contact ID not found");
+      return;
+    }
+
+    if (!authorizationToken) {
+      alert("Authorization token not found. Please login again.");
+      return;
+    }
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this contact?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
     try {
+      setDeletingId(id);
+
       console.log("DELETE CONTACT ID:", id);
 
-      const response = await fetch(
-        `https://ed-backend-r5j2.onrender.com/api/admin/contacts/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: authorizationToken,
-          },
-        }
-      );
+      const deleteUrl = `${API_URL}/api/admin/contacts/delete/${id}`;
+
+      console.log("DELETE URL:", deleteUrl);
+
+      const response = await fetch(deleteUrl, {
+        method: "DELETE",
+        headers: {
+          Authorization: authorizationToken,
+        },
+      });
 
       console.log("DELETE STATUS:", response.status);
 
@@ -75,16 +100,20 @@ const AdminContacts = () => {
         );
       }
 
-      // Remove deleted contact from UI immediately
+      // Remove deleted contact from UI
       setContactData((previousContacts) =>
         previousContacts.filter(
           (contact) => contact._id !== id
         )
       );
 
-      console.log("Contact deleted successfully");
+      alert("Contact deleted successfully");
     } catch (error) {
-      console.log("DELETE CONTACT ERROR:", error);
+      console.error("DELETE CONTACT ERROR:", error);
+
+      alert(error.message || "Contact not deleted");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -133,8 +162,11 @@ const AdminContacts = () => {
                           onClick={() =>
                             deleteContactById(_id)
                           }
+                          disabled={deletingId === _id}
                         >
-                          Delete
+                          {deletingId === _id
+                            ? "Deleting..."
+                            : "Delete"}
                         </button>
                       </td>
                     </tr>
@@ -161,3 +193,4 @@ const AdminContacts = () => {
 };
 
 export default AdminContacts;
+

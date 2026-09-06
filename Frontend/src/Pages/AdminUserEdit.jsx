@@ -1,21 +1,22 @@
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import "../index.css";
 
-const AdminUserEdit = () => {
-  // URL se user ID
-  const { id } = useParams();
+const API_URL = "https://ed-backend-r5j2.onrender.com";
 
-  // Authorization token
+const AdminUserEdit = () => {
+  const { id } = useParams();
   const { authorizationToken } = useAuth();
 
-  // User data
   const [user, setUser] = useState({
     username: "",
     phone: "",
     email: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   // ==========================================
   // GET SINGLE USER
@@ -26,7 +27,7 @@ const AdminUserEdit = () => {
         console.log("GET USER ID:", id);
 
         const response = await fetch(
-          `https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
+          `${API_URL}/api/admin/users/${id}`,
           {
             method: "GET",
             headers: {
@@ -47,14 +48,15 @@ const AdminUserEdit = () => {
           );
         }
 
-        // Backend se data form mein set
-        setUser({
-          username: data.user.username || "",
-          phone: data.user.phone || "",
-          email: data.user.email || "",
-        });
+        if (data.user) {
+          setUser({
+            username: data.user.username || "",
+            phone: data.user.phone || "",
+            email: data.user.email || "",
+          });
+        }
       } catch (error) {
-        console.log("GET USER ERROR:", error);
+        console.error("GET USER ERROR:", error);
       }
     };
 
@@ -81,24 +83,38 @@ const AdminUserEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!id) {
+      alert("User ID not found");
+      return;
+    }
+
+    if (!authorizationToken) {
+      alert("Authorization token not found. Please login again.");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       console.log("UPDATE USER ID:", id);
       console.log("UPDATE USER DATA:", user);
-      console.log("TOKEN:", authorizationToken);
 
-      const response = await fetch(
-        `https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
-        {
-          method: "PATCH",
+      const updateUrl = `${API_URL}/api/admin/users/${id}`;
 
-          headers: {
-            Authorization: authorizationToken,
-            "Content-Type": "application/json",
-          },
+      console.log("UPDATE URL:", updateUrl);
 
-          body: JSON.stringify(user),
-        }
-      );
+      const response = await fetch(updateUrl, {
+        method: "PATCH",
+        headers: {
+          Authorization: authorizationToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: user.username,
+          phone: user.phone,
+          email: user.email,
+        }),
+      });
 
       console.log("PATCH STATUS:", response.status);
 
@@ -114,7 +130,6 @@ const AdminUserEdit = () => {
 
       alert("User updated successfully");
 
-      // Updated data state mein set
       if (data.user) {
         setUser({
           username: data.user.username || "",
@@ -123,9 +138,11 @@ const AdminUserEdit = () => {
         });
       }
     } catch (error) {
-      console.log("UPDATE USER ERROR:", error);
+      console.error("UPDATE USER ERROR:", error);
 
       alert(error.message || "User not updated");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -153,6 +170,7 @@ const AdminUserEdit = () => {
               value={user.username}
               onChange={handleChange}
               placeholder="Enter username"
+              required
             />
           </div>
 
@@ -185,6 +203,7 @@ const AdminUserEdit = () => {
               value={user.email}
               onChange={handleChange}
               placeholder="Enter email"
+              required
             />
           </div>
 
@@ -192,8 +211,9 @@ const AdminUserEdit = () => {
           <button
             className="admin-update-btn"
             type="submit"
+            disabled={loading}
           >
-            Update User
+            {loading ? "Updating..." : "Update User"}
           </button>
 
         </form>
@@ -204,3 +224,4 @@ const AdminUserEdit = () => {
 };
 
 export default AdminUserEdit;
+
