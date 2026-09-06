@@ -40,7 +40,7 @@ const authorizationToken =  `Bearer ${token}`;
     const getUser = async () => {
       try {
         const response = await fetch(
-          "http://https://ed-backend-r5j2.onrender.com/api/auth/user",
+          "https://ed-backend-r5j2.onrender.com/api/auth/user",
           {
             method: "GET",
             headers: {

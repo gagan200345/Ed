@@ -30,7 +30,7 @@ const handleSubmit = async (e) =>{
  e.preventDefault();
  try {
       const response = await fetch(
-        "http://https://ed-backend-r5j2.onrender.com/api/auth/login",
+        "https://ed-backend-r5j2.onrender.com/api/auth/login",
         {
           method: "POST",
           headers: {

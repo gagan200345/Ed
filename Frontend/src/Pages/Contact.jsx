@@ -34,7 +34,7 @@ const Contact = () => {
       console.log("SENDING CONTACT DATA:", contactData);
 
       const response = await fetch(
-        "http://https://ed-backend-r5j2.onrender.com/api/auth/contact",
+        "https://ed-backend-r5j2.onrender.com/api/auth/contact",
         {
           method: "POST",
           headers: {

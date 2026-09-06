@@ -33,7 +33,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "http://https://ed-backend-r5j2.onrender.com/api/auth/register",
+        "https://ed-backend-r5j2.onrender.com/api/auth/register",
         {
           method: "POST",
           headers: {

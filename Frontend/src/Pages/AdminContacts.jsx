@@ -16,7 +16,7 @@ const AdminContacts = () => {
     const fetchContacts = async () => {
       try {
         const response = await fetch(
-          "http://https://ed-backend-r5j2.onrender.com/api/admin/contacts",
+          "https://ed-backend-r5j2.onrender.com/api/admin/contacts",
           {
             method: "GET",
             headers: {
