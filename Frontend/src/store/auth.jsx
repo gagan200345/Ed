@@ -40,7 +40,7 @@ const authorizationToken =  `Bearer ${token}`;
     const getUser = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/auth/user",
+          "http://https://ed-backend-r5j2.onrender.com/api/auth/user",
           {
             method: "GET",
             headers: {
@@ -75,7 +75,7 @@ const authorizationToken =  `Bearer ${token}`;
   const getServices = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/service"
+        "http://https://ed-backend-r5j2.onrender.com/api/auth/service"
       );
 
       if (!response.ok) {

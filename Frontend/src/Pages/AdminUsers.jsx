@@ -12,7 +12,7 @@ const AdminUsers = () => {
   const deleteUser = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/users/delete/${id}`,
+        `http://https://ed-backend-r5j2.onrender.com/api/admin/users/delete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -43,7 +43,7 @@ const AdminUsers = () => {
     const getAllUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/users",
+          "http://https://ed-backend-r5j2.onrender.com/api/admin/users",
           {
             method: "GET",
             headers: {

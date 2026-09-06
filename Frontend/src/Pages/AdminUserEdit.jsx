@@ -26,7 +26,7 @@ const AdminUserEdit = () => {
         console.log("GET USER ID:", id);
 
         const response = await fetch(
-          `http://localhost:5000/api/admin/users/${id}`,
+          `http://https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
           {
             method: "GET",
             headers: {
@@ -87,7 +87,7 @@ const AdminUserEdit = () => {
       console.log("TOKEN:", authorizationToken);
 
       const response = await fetch(
-        `http://localhost:5000/api/admin/users/${id}`,
+        `http://https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
         {
           method: "PATCH",
 
