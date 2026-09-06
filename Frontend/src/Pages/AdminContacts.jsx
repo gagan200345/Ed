@@ -54,7 +54,7 @@ const AdminContacts = () => {
       console.log("DELETE CONTACT ID:", id);
 
       const response = await fetch(
-        `http://https://ed-backend-r5j2.onrender.com/api/admin/contacts/delete/${id}`,
+        `https://ed-backend-r5j2.onrender.com/api/admin/contacts/delete/${id}`,
         {
           method: "DELETE",
           headers: {

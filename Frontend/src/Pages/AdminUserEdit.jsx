@@ -87,7 +87,7 @@ const AdminUserEdit = () => {
       console.log("TOKEN:", authorizationToken);
 
       const response = await fetch(
-        `http://https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
+        `https://ed-backend-r5j2.onrender.com/api/admin/users/${id}`,
         {
           method: "PATCH",
 
